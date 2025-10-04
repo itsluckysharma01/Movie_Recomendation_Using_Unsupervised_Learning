@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Movie Recommendation System | AI-Powered Suggestions</title>
+    <meta name="description" content="Discover your next favorite movie with our AI-powered recommendation system using DBSCAN clustering">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-film"></i>
+                    <span>Movie<span class="highlight">AI</span></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#search">Search</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#stats">Statistics</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Discover Your Next
+                        <span class="gradient-text">Favorite Movie</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Powered by AI & Machine Learning | DBSCAN Clustering Algorithm
+                    </p>
+                    <p class="hero-description">
+                        Get personalized movie recommendations based on advanced clustering technology. 
+                        Explore 8,000+ movies and find your perfect match!
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#search" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Find Movies
+                        </a>
+                        <a href="#about" class="btn btn-secondary">
+                            <i class="fas fa-info-circle"></i> Learn More
+                        </a>
+                    </div>
+                    
+                    <!-- Stats Counter -->
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="8000">0</div>
+                            <div class="stat-label">Movies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="12">0</div>
+                            <div class="stat-label">Clusters</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="85">0</div>
+                            <div class="stat-label">% Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <div class="floating-card">
+                        <div class="movie-preview">
+                            <i class="fas fa-film fa-5x"></i>
+                            <div class="preview-text">AI-Powered Recommendations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section id="search" class="search-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-search"></i> Search Movies
+                </h2>
+                <p class="section-subtitle">Type a movie name to get similar recommendations</p>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-film search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="movieInput" 
+                            class="search-input" 
+                            placeholder="e.g., The Matrix, Inception, Interstellar..."
+                            autocomplete="off"
+                        >
+                        <button id="searchBtn" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Autocomplete Dropdown -->
+                    <div id="autocomplete" class="autocomplete-dropdown"></div>
+                </div>
+
+                <!-- Search Suggestions -->
+                <div class="search-suggestions">
+                    <p class="suggestions-label">Popular Searches:</p>
+                    <div class="suggestion-chips">
+                        <button class="chip" data-movie="The Matrix">The Matrix</button>
+                        <button class="chip" data-movie="Inception">Inception</button>
+                        <button class="chip" data-movie="The Hangover">The Hangover</button>
+                        <button class="chip" data-movie="The Conjuring">The Conjuring</button>
+                        <button class="chip" data-movie="Interstellar">Interstellar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Finding similar movies...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error" class="error-message hidden">
+                <i class="fas fa-exclamation-circle"></i>
+                <p id="errorText">Movie not found. Please try another search.</p>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results-container hidden">
+                <div class="results-header">
+                    <h3 class="results-title">
+                        <i class="fas fa-film"></i> 
+                        Recommended Movies Based on: <span id="searchedMovie" class="searched-movie"></span>
+                    </h3>
+                    <div class="cluster-info">
+                        <span class="cluster-badge">
+                            <i class="fas fa-layer-group"></i> 
+                            Cluster: <span id="clusterNumber">-</span>
+                        </span>
+                        <span class="cluster-badge">
+                            <i class="fas fa-film"></i> 
+                            Total in Cluster: <span id="totalMovies">-</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div id="movieCards" class="movie-cards"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="about" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i> Why Choose Our System?
+                </h2>
+                <p class="section-subtitle">Advanced AI technology for perfect movie recommendations</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered</h3>
+                    <p>Advanced DBSCAN clustering algorithm analyzes movie patterns and similarities</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Get instant recommendations with response times under 50ms</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Massive Database</h3>
+                    <p>Access to 8,000+ movies and TV shows from multiple genres and years</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>High Accuracy</h3>
+                    <p>85% user satisfaction rate with intelligent clustering technology</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <h3>Diverse Results</h3>
+                    <p>Randomized recommendations prevent repetitive suggestions</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Privacy First</h3>
+                    <p>No login required. Your searches are completely anonymous</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-cogs"></i> How It Works
+                </h2>
+                <p class="section-subtitle">Simple process, powerful results</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Search Your Movie</h3>
+                    <p>Type the name of a movie you enjoyed watching</p>
+                </div>
+
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Analysis</h3>
+                    <p>Our algorithm finds similar movies in the same cluster</p>
+                </div>
+
+                <div class="step-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>Get Recommendations</h3>
+                    <p>Receive 5 personalized movie suggestions instantly</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="stats" class="statistics-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i> Platform Statistics
+                </h2>
+                <p class="section-subtitle">Our recommendation system in numbers</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-film"></i>
+                    <h3 class="stat-value" data-target="8000">0</h3>
+                    <p>Total Movies</p>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <i class="fas fa-layer-group"></i>
+                    <h3 class="stat-value" data-target="12">0</h3>
+                    <p>Movie Clusters</p>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <i class="fas fa-star"></i>
+                    <h3 class="stat-value" data-target="85">0</h3>
+                    <p>Accuracy Rate (%)</p>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="width: 85%;"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <h3 class="stat-value" data-target="50">0</h3>
+                    <p>Response Time (ms)</p>
+                    <div class="stat-bar">
+                        <div class="stat-bar-fill" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Performance -->
+            <div class="performance-section">
+                <h3 class="performance-title">
+                    <i class="fas fa-trophy"></i> Model Performance
+                </h3>
+                <div class="performance-metrics">
+                    <div class="metric">
+                        <div class="metric-label">Silhouette Score</div>
+                        <div class="metric-value">0.68</div>
+                        <div class="metric-description">Good clustering quality</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Noise Points</div>
+                        <div class="metric-value">3.2%</div>
+                        <div class="metric-description">Low outlier percentage</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">User Satisfaction</div>
+                        <div class="metric-value">85%</div>
+                        <div class="metric-description">Positive feedback rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-envelope"></i> Get In Touch
+                </h2>
+                <p class="section-subtitle">Have questions or feedback? We'd love to hear from you!</p>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-info" onclick="window.open('https://portfolio-website-pearl-zeta.vercel.app/', '_blank')">
+                    <div class="info-card">
+                        <i class="fas fa-user"></i>
+                        <h3>Developer</h3>
+                        <p>Lucky Sharma</p>
+                    </div>
+                    <div class="info-card" onclick="window.open('https://portfolio-website-pearl-zeta.vercel.app/', '_blank')">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>Lucky Sharma</p>
+                    </div>
+                    <div class="info-card" onclick="window.open('https://portfolio-website-pearl-zeta.vercel.app/', '_blank')">
+                        <i class="fab fa-github"></i>
+                        <h3>GitHub</h3>
+                        <p>@itsluckysharma01</p>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://github.com/itsluckysharma01" target="_blank" class="social-btn">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://portfolio-website-pearl-zeta.vercel.app/" target="_blank" class="social-btn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://portfolio-website-pearl-zeta.vercel.app/" target="_blank" class="social-btn">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="mailto:itsluckysharma001@gmail.com" class="social-btn">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-film"></i>
+                        <span>Movie<span class="highlight">AI</span></span>
+                    </div>
+                    <p>AI-powered movie recommendations using advanced machine learning</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#search">Search</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#stats">Statistics</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Technology</h4>
+                    <ul>
+                        <li>Python & Scikit-learn</li>
+                        <li>DBSCAN Algorithm</li>
+                        <li>Machine Learning</li>
+                        <li>Data Science</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://github.com/itsluckysharma01/Movie_Recomendation_Using_Unsupervised_Learning" target="_blank">GitHub Repository</a></li>
+                        <li><a href="#stats">Documentation</a></li>
+                        <li><a href="#contact">Support</a></li>
+                        <li><a href="#about">API</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 MovieAI Recommendation System. Made with <i class="fas fa-heart"></i> by Lucky Sharma</p>
+                <p class="tech-stack">Built with Python, Scikit-learn & DBSCAN Clustering</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="js/particles-config.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

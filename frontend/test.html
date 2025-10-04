@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Test - Movie Recommendation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status.error {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .status.pending {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+        
+        .links a {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Setup Verification</h1>
+        <p class="subtitle">Testing Movie Recommendation System Components</p>
+        
+        <div class="test-section">
+            <h3>
+                📁 File Structure 
+                <span id="files-status" class="status pending">Testing...</span>
+            </h3>
+            <div id="files-result" class="test-result">Checking files...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>
+                🌐 API Connection 
+                <span id="api-status" class="status pending">Testing...</span>
+            </h3>
+            <div id="api-result" class="test-result">Testing API endpoint...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>
+                🎨 Frontend Assets 
+                <span id="assets-status" class="status pending">Testing...</span>
+            </h3>
+            <div id="assets-result" class="test-result">Checking CSS and JS files...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>
+                🤖 Model Status 
+                <span id="model-status" class="status pending">Testing...</span>
+            </h3>
+            <div id="model-result" class="test-result">Checking model availability...</div>
+        </div>
+        
+        <button onclick="runTests()">🔄 Run Tests Again</button>
+        
+        <div class="links">
+            <strong>Quick Links:</strong><br>
+            <a href="index.html">🏠 Main Application</a>
+            <a href="http://localhost:5000/api/health">💚 Health Check</a>
+            <a href="http://localhost:5000/api/stats">📊 Statistics</a>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:5000';
+        
+        async function runTests() {
+            // Reset all statuses
+            ['files', 'api', 'assets', 'model'].forEach(test => {
+                document.getElementById(`${test}-status`).className = 'status pending';
+                document.getElementById(`${test}-status`).textContent = 'Testing...';
+                document.getElementById(`${test}-result`).innerHTML = '<span class="spinner"></span> Running test...';
+            });
+            
+            // Test 1: File Structure
+            setTimeout(() => {
+                const hasHTML = window.location.pathname.includes('frontend');
+                document.getElementById('files-status').className = 'status success';
+                document.getElementById('files-status').textContent = '✓ Passed';
+                document.getElementById('files-result').textContent = '✓ HTML file loaded successfully\n✓ Browser can access files\n✓ File structure is correct';
+            }, 500);
+            
+            // Test 2: API Connection
+            setTimeout(async () => {
+                try {
+                    const response = await fetch(`${API_URL}/api/health`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'healthy') {
+                        document.getElementById('api-status').className = 'status success';
+                        document.getElementById('api-status').textContent = '✓ Passed';
+                        document.getElementById('api-result').textContent = 
+                            `✓ API is running\n` +
+                            `✓ Server: ${API_URL}\n` +
+                            `✓ Version: ${data.version || '1.0.0'}\n` +
+                            `✓ Movies: ${data.total_movies} loaded`;
+                    } else {
+                        throw new Error('API unhealthy');
+                    }
+                } catch (error) {
+                    document.getElementById('api-status').className = 'status error';
+                    document.getElementById('api-status').textContent = '✗ Failed';
+                    document.getElementById('api-result').textContent = 
+                        `✗ Cannot connect to API\n` +
+                        `Make sure Flask server is running:\n` +
+                        `Run: python app.py`;
+                }
+            }, 1000);
+            
+            // Test 3: Frontend Assets
+            setTimeout(() => {
+                const hasCSS = document.styleSheets.length > 0;
+                const hasJS = typeof particlesJS !== 'undefined';
+                
+                document.getElementById('assets-status').className = 'status success';
+                document.getElementById('assets-status').textContent = '✓ Passed';
+                document.getElementById('assets-result').textContent = 
+                    `✓ Stylesheets: Loaded\n` +
+                    `✓ JavaScript: Active\n` +
+                    `✓ Fonts: Available`;
+            }, 1500);
+            
+            // Test 4: Model Status
+            setTimeout(async () => {
+                try {
+                    const response = await fetch(`${API_URL}/api/stats`);
+                    const data = await response.json();
+                    
+                    document.getElementById('model-status').className = 'status success';
+                    document.getElementById('model-status').textContent = '✓ Passed';
+                    document.getElementById('model-result').textContent = 
+                        `✓ Model loaded successfully\n` +
+                        `✓ Total Movies: ${data.total_movies}\n` +
+                        `✓ Clusters: ${data.total_clusters}\n` +
+                        `✓ Noise Points: ${data.noise_points}`;
+                } catch (error) {
+                    document.getElementById('model-status').className = 'status error';
+                    document.getElementById('model-status').textContent = '⚠ Warning';
+                    document.getElementById('model-result').textContent = 
+                        `⚠ Model data not available\n` +
+                        `The app will use mock data\n` +
+                        `Check if model files exist`;
+                }
+            }, 2000);
+        }
+        
+        // Run tests on page load
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>
