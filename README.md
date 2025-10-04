@@ -12,7 +12,7 @@
 
 **An intelligent movie recommendation system with interactive web interface using unsupervised machine learning & DBSCAN clustering**
 
-[🌐 Live Demo](#-web-interface) • [🚀 Quick Start](#-quick-start) • [� Features](#-features) • [🔧 API](#-api-usage)
+[🌐 Live Demo](https://movie-recomendation-using-unsupervised.onrender.com) • [🚀 Quick Start](#-quick-start) • [� Features](#-features) • [🔧 API](#-api-usage)
 
 ![Movie Recommendation Demo](https://img.shields.io/badge/8000+-Movies-purple?style=for-the-badge)
 ![Clusters](https://img.shields.io/badge/12-Clusters-pink?style=for-the-badge)
@@ -38,7 +38,7 @@
 - [🔧 API Usage](#-api-usage)
 - [� Model Performance](#-model-performance)
 - [🧪 Testing](#-testing)
-- [📊 Demo](#-demo)
+- [📊 Demo]([https://movie-recomendation-using-unsupervised.onrender.com])
 - [🎨 Screenshots](#-screenshots)
 - [🚢 Deployment](#-deployment)
 - [🤝 Contributing](#-contributing)
