@@ -1,15 +1,13 @@
-# Flask Backend Dependencies
-Flask==2.3.0
-flask-cors==4.0.0
-
-# Machine Learning
-pandas==1.5.3
-numpy==1.24.3
-scikit-learn==1.2.2
-
-# Model Persistence
-joblib==1.2.0
-
-# Optional but recommended
 python-dotenv==1.0.0
 gunicorn==20.1.0
+Jinja2==3.1.2
+click==8.1.7
+gunicorn==21.2.0
+Flask
+joblib
+Werkzeug
+numpy
+pandas
+scipy
+cython
+scikit-learn
